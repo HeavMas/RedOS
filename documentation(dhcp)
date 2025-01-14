@@ -1,4 +1,10 @@
+В видео рассмотрена базовая установка сервиса DHCP на сервер под управление ОС Ред ОС.
+Используемые команды:
 sudo dnf upgrade --refresh
+
+nmcli con show
+nmcli con mod "Проводное подключение 1" con-name enp7s0
+
 dnf install dhcp-server
 nano /etc/dhcp/dhcpd.conf
 /////////////////файл dhcpd.conf содержит//////////////////////
@@ -46,10 +52,9 @@ ON BOOT="yes"
 
 ///////////////////////////////////////////
 
+
+nmcli con mod enp7s0 ipv4.addresses 10.10.10.1 ipv4.gateway <IP внешнего роутера> ipv4.dns <IP внешнего роутера> ipv4.method manual ipv6.method disabled
+
+
 systemctl enable dhcpd
 systemctl start dhcpd
-
-
-nmcli
-nmcli connection show
-
