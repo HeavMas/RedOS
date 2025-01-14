@@ -1,0 +1,42 @@
+dnf provides /usr/sbin/semanage
+Должен быть следующий вывод в консоль
+//////////////////
+Последняя проверка окончания срока действия метаданных: 1:35:43 назад, Пн 13 янв 2025 23:45:06.
+policycoreutils-python-utils-3.4-7.red80.noarch : SELinux policy core python utilities
+Репозиторий        : base
+Совпадения с:
+Имя файла   : /usr/sbin/semanage
+
+policycoreutils-python-utils-3.5-1.red80.noarch : SELinux policy core python utilities
+Репозиторий        : @System
+Совпадения с:
+Имя файла   : /usr/sbin/semanage
+
+policycoreutils-python-utils-3.5-1.red80.noarch : SELinux policy core python utilities
+Репозиторий        : updates
+Совпадения с:
+Имя файла   : /usr/sbin/semanage
+//////////////////////
+
+Если есть, тогда выполнить:
+
+
+dnf install vsftpd ftp nano policycoreutils-python-utils
+systemctl enable vsftpd --now
+cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.backup
+
+nano /etc/vsftpd/vsftpd.conf
+Внести (или проверить наличие, или раскоментировать) строки
+////////
+anonymous_enable=NO
+user_config_dir=/etc/vsftpd_user_conf
+pasv_enable=YES
+
+
+local_enable=YES
+write_enable=YES
+
+chroot_local_user=YES
+allow_writeable_chroot=YES
+
+///////////////////
