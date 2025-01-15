@@ -40,3 +40,29 @@ chroot_local_user=YES
 allow_writeable_chroot=YES
 
 ///////////////////
+
+useradd user1 -d /home/user1
+passwd user1
+usermod -aG ftp user1
+mkdir /etc/vsftpd_user_conf
+
+nano /etc/vsftpd_user_conf/user1
+Вписать строку:
+
+////////
+local_root=/srv/ftp/
+///////
+
+mkdir /srv/ftp
+chown -R user1:user1 /srv/ftp
+
+semanage fcontext -a -t public_content_rw_t "/srv/ftp(/.*)?"
+semanage fcontext -a -t httpd_sys_content_t "/srv/ftp/(/.*)?"
+chcon -R -t httpd_sys_rw_content_t /srv/ftp/
+chcon -R -t public_content_rw_t /srv/ftp/
+setsebool -P tftp_home_dir on
+setsebool -P ftpd_full_access on
+restorecon -Rv /srv/ftp
+
+
+systemctl restart vsftpd
